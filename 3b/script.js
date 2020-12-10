@@ -1,21 +1,4 @@
-
-//console.log((9+3)%11)
-
-//mock input list (iz primera)
-/* inputList = [
-"..##.......",
-"#...#...#..",
-".#....#..#.",
-"..#.#...#.#"
-] */
-
-var slopenes = [(1,1),(3,1)]
-
-for (let rightAmmount, downAmmount of slopenes) {
-    console.log(rightAmmount, downAmmount)
-}
-
-
+// input podatki za nalogo: 
 inputList = [
 "....##..#........##...#.#..#.##",
 ".#.#..#....##....#...#..##.....",
@@ -341,17 +324,51 @@ inputList = [
 ".#......#.#....#.#.#..#....#...",
 ".#..#.#.#..#....#.............."
 ]
-// slopenes notranji tuple: 1. cifra = za koliko v desno, 2. za koliko dol
-var slopenes = [(1,1),(3,1),(5,1),(7,1),(1,2)]
 
-    
-    var index = 0
-    var treeCounter = 0
-    
-    for (let line of inputList.slice(1,)) {
-        index = (index + 3) % line.length 
-        if (line[index]=="#") {
+// PRVI ŠTIRJE HRIBI (so skupaj, ker se vsi spustijo "dol" za 1 vrstico)
+var slopenesOfHills = [1,3,5,7]  // = za koliko se v vsaki vrstici pomaknemo desno na posameznem hrib
+var numOfHills = slopenesOfHills.length
+var allHillsTreeCounter = []    // = za vse hribe, razen zadnjega, ki poseben
+
+for (let hillNum = 0; hillNum < numOfHills; hillNum++) {
+    let treeCounter = 0
+    let lineIndex = 0   // = mesto znotraj vrstice kjer pristanemo s toboganom v neki vrstici
+    moveToRightAmmount = slopenesOfHills[hillNum]
+
+    for (let line of inputList.slice(1,)) { // prvo vrstico ignoriramo ker tam ne pristanemo
+        lineIndex = (lineIndex + moveToRightAmmount) % line.length 
+        if (line[lineIndex]=="#") {
             treeCounter += 1
         }
     }
-    console.log("stDreves = ", treeCounter)
+    allHillsTreeCounter[hillNum] = treeCounter
+
+    console.log("št dreves na hribu št. "+hillNum+": ", treeCounter)
+}
+
+// ZADNJI SPUST (posebej, ker preskoči vsako 2. vrstico)
+var lastHillLineIndex = 0
+var lastHillTreeCounter = 0
+
+for (let lineNum=2; lineNum<inputList.length; lineNum += 2) {   // začnemo kar s 3. vrsto (lineNum = 2) ker se v prvi vrsti ne dotaknemo drevesa
+    line = inputList[lineNum]
+    lastHillLineIndex = (lastHillLineIndex + 1) % line.length 
+    if (line[lastHillLineIndex]=="#") {
+        lastHillTreeCounter += 1
+    }
+}
+
+console.log("stevilo dreves v zadnjem (posebnem) hribu", lastHillTreeCounter)
+
+// KONČNI ZMNOŽEK DREVES NA VSAKEM HRIBU
+// pomnožimo med seboj št dreves na prvih štirih hribih 
+var finalMultiplication = 1
+for (let i = 0; i < numOfHills; i++) {
+    singleHillCounter = allHillsTreeCounter[i]
+    finalMultiplication = finalMultiplication * singleHillCounter
+}
+
+// pomnožimo še z zadnjim hribom
+finalMultiplication = finalMultiplication * lastHillTreeCounter 
+
+console.log ("končni rezultat (zmnožek) = ", finalMultiplication)
