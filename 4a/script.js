@@ -1,3 +1,24 @@
+/* Kako sem se lotil naloge?
+Moj prva misel je bila uporaba Regexov, a ker je naloga relativno preprosta,
+saj je treba le ugotoviti, če so določena polja prisotna, sem se odločil za
+preprosto string metodo .includes() preveriti, če so potrebna polja prisotna
+pri vsakem posameznem passportu.
+
+Za to nalogo je bilo dovolj, če se zapis za vsak posamezen passport smatra kot
+string, zato sem input podatke na začetku zgolj s pomočjo Notepad++ preoblikoval
+tako da sem dvojne newline zamenjal z `\n` in tako dobil list stringov, pri
+čemer vsak string predstavlja podatke o enem potnem listu.
+
+Rešitev naloge je bila potem precej preprosta, najprej sem jo preizkusil na mock
+podatkih (torej podatkih iz primera iz e-strani z nalogo), in postopek, ki se je
+izkazal za pravilen pri mock podatkih, je podal pravilen rezultat tudi pri
+pravih podatkih.
+
+A kot sem sumil, se je izkazalo, da bo naslednji, 2. del naloge bolj
+zapleten in bo najverjetneje vseeno potreboval uporabo Regexov.
+*/
+
+// vhodni podatki:
 inputList = [
 `eyr:2029 byr:1931 hcl:z cid:128
 ecl:amb hgt:150cm iyr:2015 pid:148714704`,
