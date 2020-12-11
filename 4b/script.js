@@ -1206,9 +1206,10 @@ const hairColorRgx = /(hcl):(#([0-9a-f]){6})/
 const eyeColorRgx = /(ecl):(amb|blu|brn|gry|grn|hzl|oth)/
 const passportIdRgx = /(pid):(\d{9})/
 
-passportsWithRequiredFields = []
-passportsWithoutRequiredFieldsCounter = 0  // = katere vrže ven
 
+let passportsWithRequiredFields = []
+let passportsWithoutRequiredFieldsCounter = 0  // = katere vrže ven
+let inputPassportsProcessedCounter = 0
 
 function setFieldValue (stringToSearch,rgx,valueIndex){
     return stringToSearch.match(rgx)[valueIndex]  //valueIndex = v katerem regex groupu je value (morda je vedno 2?)
@@ -1219,6 +1220,7 @@ function setFieldValue (stringToSearch,rgx,valueIndex){
 // USTVARI ARRAY PASSPORT OBJECTOV (tudi vrže ven tiste brez required polj ali z neveljavnimi vrednostmi (ki se jih dalo preverit z regexi))
 console.log("USTVARJAM ARRAY OBJEKTOV + izločam nepravilne glede na regex pogoje")
 for (passport of inputList) {   // vsak item v inputList je en passport
+    inputPassportsProcessedCounter += 1
     try {
         passportObj = {
             byr: parseInt(setFieldValue(passport, birthYearRgx,2)),   // TODO: spremeni, da ni 1. arg, ker vedno isti
@@ -1230,6 +1232,7 @@ for (passport of inputList) {   // vsak item v inputList je en passport
             pid: setFieldValue(passport, passportIdRgx, 2)
         }
         passportsWithRequiredFields.push(passportObj)
+        console.log ("OK:", passport)
     } catch (TypeError) {    // če neko polje ni prisotno, naj preprosto ne ustvari celotnega passportObj
         console.log ("IZLOČIL: ", passport)
         //console.log("Ne morem ustvariti passportObj!")
