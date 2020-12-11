@@ -1197,7 +1197,7 @@ hgt:179cm` */
 
 
 
-// REGEXI za required fieldse (skupaj z nj. values)
+// REGEXI za required fielde (skupaj z nj. values)
 const birthYearRgx = /(byr):(\d{4})/
 const issueYearRgx = /(iyr):(\d{4})/
 const expirationYearRgx = /(eyr):(\d{4})/
@@ -1229,12 +1229,13 @@ function setFieldValue (stringToSearch,rgx,valueIndex){
 
 function consoleLogCounters () {
     console.log("Counters: All:", inputList.length, "Procesed:",processedPassportsCounter,
-                "Valid:", passportsWithRequiredFields.length, "Invalid:", passportsWithoutRequiredFieldsCounter)
+    "Invalid:", passportsWithoutRequiredFieldsCounter, "Valid:", passportsWithRequiredFields.length)
 }
 
 
-
+// 1. FAZA - Z REGEXI PREVERI PRISOTNOST IN OBLIKOVNO PRAVILNOST POLJ NA PASSPORTIH
 // USTVARI ARRAY PASSPORT OBJECTOV (tudi vrže ven tiste brez required polj ali z neveljavnimi vrednostmi (ki se jih dalo preverit z regexi))
+
 console.log("USTVARJAM ARRAY OBJEKTOV + izločam nepravilne glede na regex pogoje\n")
 for (passport of inputList) {   // vsak item v inputList je en passport
     processedPassportsCounter += 1
@@ -1262,19 +1263,25 @@ for (passport of inputList) {   // vsak item v inputList je en passport
     }
 }
 
-
 console.log("\n\nAll passports z vsemi required in valid oblike fieldi: \n", passportsWithRequiredFields)
 
 
 
-// PREVERI ŠE VREDNOSTI V POSAMEZNIH FIELDIH
+// 2. FAZA: PREVERI ŠE USTREZNOST VELIKOSTI VREDNOSTI V POSAMEZNIH FIELDIH
 console.log("\nSEDAJ PREVERJAMO ŠE USTREZNOST VELIKOSTI VREDNOSTI FIELDOV\n")
 
+function consoleLogCountersPhase2 (){
+    console.log("Counters: All:", passportsWithRequiredFields.length, "Proccesed:", processedPassportsCounterPhase2, 
+                "Invalid:", passportsWithInvalidFieldValuesCounter, "Valid:",validPassports.length)
+}
+
 let validPassports = []
+processedPassportsCounterPhase2 = 0
 passportsWithInvalidFieldValuesCounter = 0
 
 for (passport of passportsWithRequiredFields) {
     console.log("\n", passport)
+    processedPassportsCounterPhase2 += 1
     let isValidPassport = true
 
     // preveri BYR (birth year):
@@ -1336,10 +1343,12 @@ for (passport of passportsWithRequiredFields) {
     if (isValidPassport === true) {
         console.log ("passport = OK!!")
         validPassports.push(passport)
+        consoleLogCountersPhase2()
     }
     else {
         console.log("passport INVALID!")
         passportsWithInvalidFieldValuesCounter += 1
+        consoleLogCountersPhase2()
 
     }
 }
@@ -1350,8 +1359,8 @@ let finalResult = validPassports.length
 // izpis, koliko passportov prešlo čez posamezne faze:
 console.log("\nKONČNI REZULTATI:")
 console.log("št v vhodnih podatkih:", inputList.length)
-console.log("št brez required fieldov (ali s failed regex check):", passportsWithoutRequiredFieldsCounter)
-console.log("št z required fieldi (in passed regex check):", passportsWithRequiredFields.length)
+console.log("št brez required fieldov (ali z napačno obliko le-teh):", passportsWithoutRequiredFieldsCounter)
+console.log("št z required fieldi (in pravilno obliko le-teh):", passportsWithRequiredFields.length)
 console.log("št z invalid field values:", passportsWithInvalidFieldValuesCounter)
 console.log("št valid passportov", validPassports.length)
 
