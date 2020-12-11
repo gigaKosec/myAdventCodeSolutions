@@ -1206,13 +1206,15 @@ const hairColorRgx = /(hcl):(#([0-9a-f]){6})/
 const eyeColorRgx = /(ecl):(amb|blu|brn|gry|grn|hzl|oth)/
 const passportIdRgx = /(pid):(\d{9})/
 
-allPassportsWithRequiredFields = []
+passportsWithRequiredFields = []
+passportsWithoutRequiredFieldsCounter = 0  // = katere vrže ven
+
 
 function setFieldValue (stringToSearch,rgx,valueIndex){
     return stringToSearch.match(rgx)[valueIndex]  //valueIndex = v katerem regex groupu je value (morda je vedno 2?)
 }
 
-passportsWithoutRequiredFieldsCounter = 0
+
 
 // USTVARI ARRAY PASSPORT OBJECTOV (tudi vrže ven tiste brez required polj ali z neveljavnimi vrednostmi (ki se jih dalo preverit z regexi))
 console.log("USTVARJAM ARRAY OBJEKTOV + izločam nepravilne glede na regex pogoje")
@@ -1227,7 +1229,7 @@ for (passport of inputList) {   // vsak item v inputList je en passport
             ecl: setFieldValue(passport, eyeColorRgx, 2),
             pid: setFieldValue(passport, passportIdRgx, 2)
         }
-        allPassportsWithRequiredFields.push(passportObj)
+        passportsWithRequiredFields.push(passportObj)
     } catch (TypeError) {    // če neko polje ni prisotno, naj preprosto ne ustvari celotnega passportObj
         console.log ("IZLOČIL: ", passport)
         //console.log("Ne morem ustvariti passportObj!")
@@ -1237,91 +1239,100 @@ for (passport of inputList) {   // vsak item v inputList je en passport
 }
 
 
-console.log("all passports z vsemi required fieldi: \n", allPassportsWithRequiredFields)
+console.log("all passports z vsemi required fieldi: \n", passportsWithRequiredFields)
 
-passportsWithInvalidFieldsCounter = 0
+passportsWithInvalidFieldValuesCounter = 0
 
 // PREVERI ŠE VREDNOSTI V POSAMEZNIH FIELDIH
 
-let allValidpassports = []
+let validPassports = []
 
-for (passport of allPassportsWithRequiredFields) {
+for (passport of passportsWithRequiredFields) {
     console.log("\n", passport)
     let isValidPassport = true
 
-    // preveri BYR:
+    // preveri BYR (birth year):
     if ((passport.byr >= 1920) && (passport.byr <= 2002)) {
-        console.log("Byr = ok")
+        // zraven še izpisi v konzoli, da se lahko "na oko" preveri, če pravilno filtrira
+        console.log("Byr = ok  (1920<", passport.byr, "<2002) ok")
     }
     else {
-        console.log("byr = invalid")
+        console.log("byr = invalid (1920 <!", passport.byr, "!< 2002) bad")
         isValidPassport = false
     }
 
-    // preveri IYR:
+    // preveri IYR (issue year):
     if ((passport.iyr >= 2010) && (passport.iyr <= 2020)) {
-        console.log("Iyr = ok")
+        console.log("Iyr = ok  (2010<",passport.iyr,"<2020) ok")
     }
     else {
-        console.log("iyr = invalid")
+        console.log("iyr = bad  (2010<!",passport.iyr,"!<2020) bad")
         isValidPassport = false
     }   
 
-    // preveri EYR:
+    // preveri EYR (expiration year):
     if ((passport.eyr >= 2020) && (passport.eyr <= 2030)) {
-        console.log("eyr = ok")
+        console.log("eyr = ok  (2020<",passport.eyr,"<2030) ok")
     }
     else {
-        console.log("eyr = invalid")
+        console.log("eyr = bad  (2020<!",passport.eyr,"!<2030) bad")
         isValidPassport = false
     }
 
-    // preveri HGT (če v cm)
+    // preveri HGT (height) - če v cm
     if ((passport.hgt).includes("cm")) {
-        console.log ("višina je v cm")
+        //console.log ("Hgt je v cm")
         if ((parseInt(((passport.hgt).slice(0,-2))) >= 150) && 
             (parseInt(((passport.hgt).slice(0,-2))) <= 193))
         {
-            console.log("višina je ok")
+            console.log("Hgt(cm) =ok (150<",passport.hgt,"<193cm) ok")
         }
         else {
-            console.log("višina ni ok")
+            console.log("Hgt(cm) =bad (150<!",passport.hgt,"!<193cm) bad")
             isValidPassport = false
         }
     }
 
-    // preveri HGT (če v inčih)
+    // preveri HGT (height) - če v inčih
     if ((passport.hgt).includes("in")) {
-        console.log ("višina je v inčih")
+        //console.log ("višina je v inčah")
         if ((parseInt(((passport.hgt).slice(0,-2))) >= 59) && 
             (parseInt(((passport.hgt).slice(0,-2))) <= 76))
         {
-            console.log("višina je ok")
+            console.log("Hgt(in) =ok (59<",passport.hgt,"<76in) ok" )
         }
         else {
-            console.log("višina ni ok")
+            console.log("Hgt(in) =bad  (59<!",passport.hgt,"!<76in) bad")
             isValidPassport = false
         }
     }
-    // preveri, če vsi checki bili ok
+    // preveri, če bili vsi checki ok
     if (isValidPassport === true) {
         console.log ("passport = OK!!")
-        allValidpassports.push(passport)
+        validPassports.push(passport)
     }
     else {
         console.log("passport INVALID!")
-        passportsWithInvalidFieldsCounter += 1
+        passportsWithInvalidFieldValuesCounter += 1
 
     }
 }
 
 
-let finalResult = allValidpassports.length
-console.log("Število validnih passportov =", finalResult)
+let finalResult = validPassports.length
+
+// izpis, koliko passportov prešlo čez posamezne faze:
+console.log("\nKONČNI REZULTATI:")
+console.log("št v vhodnih podatkih:", inputList.length)
+console.log("št brez required fieldov (ali s failed regex check):", passportsWithoutRequiredFieldsCounter)
+console.log("št z required fieldi (in passed regex check):", passportsWithRequiredFields.length)
+console.log("št z invalid field values:", passportsWithInvalidFieldValuesCounter)
+console.log("št valid passportov", validPassports.length)
 
 
 
-// zadetki regexov
+
+// testno: zadetki regexov za mock string
 /* console.log(stringToSearch.match(birthYearRgx))
 console.log(stringToSearch.match(issueYearRgx))
 console.log(stringToSearch.match(expirationYearRgx))
@@ -1332,10 +1343,5 @@ console.log(stringToSearch.match(passportIdRgx))
 */
 
 
-// PREVERBA, ČE SE VSE UJEMA:
-console.log("št v inputList:", inputList.length)
-console.log ("št brez required fieldov:", passportsWithoutRequiredFieldsCounter)
-console.log("št z required fieldi:", allPassportsWithRequiredFields.length)
-console.log("št z invalid field values:", passportsWithInvalidFieldsCounter)
-console.log("št valid passportov", allValidpassports.length)
+
 
