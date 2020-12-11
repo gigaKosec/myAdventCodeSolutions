@@ -1206,22 +1206,41 @@ const hairColorRgx = /(hcl):(#([0-9a-f]){6})/
 const eyeColorRgx = /(ecl):(amb|blu|brn|gry|grn|hzl|oth)/
 const passportIdRgx = /(pid):(\d{9})/
 
+processedPassportsCounter = 0
+passportsWithRequiredFields = []
+passportsWithoutRequiredFieldsCounter = 0  // = katere vrže ven
 
-let passportsWithRequiredFields = []
-let passportsWithoutRequiredFieldsCounter = 0  // = katere vrže ven
-let inputPassportsProcessedCounter = 0
 
 function setFieldValue (stringToSearch,rgx,valueIndex){
-    return stringToSearch.match(rgx)[valueIndex]  //valueIndex = v katerem regex groupu je value (morda je vedno 2?)
+    //najprej preveri, če je ima field valid obliko (nujno, ker drugače je pri regex match metodi rezultat Null, kar privede do Exceptiona, če hočeš dobit ven group)
+    //console.log ("preverjam field:", rgx)
+    let isValid = rgx.test(stringToSearch)
+    if (isValid === true) {
+        //let wholeField = stringToSearch.match(rgx)[0]
+        //console.log("ok field:", wholeField)
+        let fieldValue = stringToSearch.match(rgx)[valueIndex]  //valueIndex = v katerem regex groupu je value (morda je vedno 2?)
+        return fieldValue
+    }
+    else {
+        console.log ("Invalid/missing field:", rgx)
+        throw "Invalid field format"
+    }
+}
+
+function consoleLogCounters () {
+    console.log("Counters: All:", inputList.length, "Procesed:",processedPassportsCounter,
+                "Valid:", passportsWithRequiredFields.length, "Invalid:", passportsWithoutRequiredFieldsCounter)
 }
 
 
 
 // USTVARI ARRAY PASSPORT OBJECTOV (tudi vrže ven tiste brez required polj ali z neveljavnimi vrednostmi (ki se jih dalo preverit z regexi))
-console.log("USTVARJAM ARRAY OBJEKTOV + izločam nepravilne glede na regex pogoje")
+console.log("USTVARJAM ARRAY OBJEKTOV + izločam nepravilne glede na regex pogoje\n")
 for (passport of inputList) {   // vsak item v inputList je en passport
-    inputPassportsProcessedCounter += 1
+    processedPassportsCounter += 1
     try {
+        console.log("\n")
+        console.log (passport)
         passportObj = {
             byr: parseInt(setFieldValue(passport, birthYearRgx,2)),   // TODO: spremeni, da ni 1. arg, ker vedno isti
             iyr: parseInt(setFieldValue(passport, issueYearRgx,2)),
@@ -1231,24 +1250,28 @@ for (passport of inputList) {   // vsak item v inputList je en passport
             ecl: setFieldValue(passport, eyeColorRgx, 2),
             pid: setFieldValue(passport, passportIdRgx, 2)
         }
+        console.log("passport OK:", passportObj)
         passportsWithRequiredFields.push(passportObj)
-        console.log ("OK:", passport)
+        consoleLogCounters()
     } catch (TypeError) {    // če neko polje ni prisotno, naj preprosto ne ustvari celotnega passportObj
-        console.log ("IZLOČIL: ", passport)
+        //console.log ("IZLOČIL: ", passport)
         //console.log("Ne morem ustvariti passportObj!")
         passportsWithoutRequiredFieldsCounter += 1
+        consoleLogCounters()
         continue
     }
 }
 
 
-console.log("all passports z vsemi required fieldi: \n", passportsWithRequiredFields)
+console.log("\n\nAll passports z vsemi required in valid oblike fieldi: \n", passportsWithRequiredFields)
 
-passportsWithInvalidFieldValuesCounter = 0
+
 
 // PREVERI ŠE VREDNOSTI V POSAMEZNIH FIELDIH
+console.log("\nSEDAJ PREVERJAMO ŠE USTREZNOST VELIKOSTI VREDNOSTI FIELDOV\n")
 
 let validPassports = []
+passportsWithInvalidFieldValuesCounter = 0
 
 for (passport of passportsWithRequiredFields) {
     console.log("\n", passport)
