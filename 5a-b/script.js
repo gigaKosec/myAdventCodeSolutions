@@ -859,7 +859,15 @@ for (let line of lines) {
 }
 
 console.log(seatIds)
-console.log(Math.max.apply(Math, seatIds))
+console.log("Najvišji seat ID =", Math.max.apply(Math, seatIds))
 
+//////////// 2. PART
+
+seatIds.sort((a, b) => a - b)
+for (i = 1; i < seatIds.length; i++) {
+    if (seatIds[i]+2 === seatIds[i+1]){
+        console.log("my seat ID =", seatIds[i]+1)
+    }
+}
 
 
