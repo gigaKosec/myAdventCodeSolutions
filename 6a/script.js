@@ -1,4 +1,5 @@
-iwaduermzfyc
+let input =
+`iwaduermzfyc
 zdmrlfyau
 wfdzhrmauy
 yfzdmaru
@@ -2043,4 +2044,47 @@ ugmlsi
 auiomgslf
 
 tibudoa
-obuatifgp
+obuatifgp`
+
+let mockInput = 
+`abc
+
+a
+b
+c
+
+ab
+ac
+
+a
+a
+a
+a
+
+b`
+
+let mockItem = `ab
+ac`
+
+// spremeni input string v list 
+let inputList = (input.split("\n\n"))
+// izbriši newline znotraj posameznih itemov lista, ker nepomembni za rezultat
+inputList = inputList.map(i => i.replace(/\n/g,''))
+console.log(inputList)
+
+let listOfSets = []
+
+for (item of inputList) {
+    //spremeni vsak item v set, s čimer se znebimo podvojenih elementov
+    let setFromItem = new Set(item)
+    listOfSets.push(setFromItem)
+}
+
+sumOfSetSizes = 0
+
+//console.log(listOfSets)
+for (let set of listOfSets) {
+    sumOfSetSizes += set.size
+}
+
+console.log(sumOfSetSizes)
