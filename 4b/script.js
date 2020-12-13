@@ -1198,13 +1198,13 @@ hgt:179cm` */
 
 
 // REGEXI za required fielde (skupaj z nj. values)
-const birthYearRgx = /(byr):(\d{4})/
-const issueYearRgx = /(iyr):(\d{4})/
-const expirationYearRgx = /(eyr):(\d{4})/
+const birthYearRgx = /(byr):(\d{4})\b/
+const issueYearRgx = /(iyr):(\d{4})\b/
+const expirationYearRgx = /(eyr):(\d{4})\b/
 const heightRgx = /(hgt):((\d+)(cm|in))/
-const hairColorRgx = /(hcl):(#([0-9a-f]){6})/
+const hairColorRgx = /(hcl):(#([0-9a-f]){6})\b/
 const eyeColorRgx = /(ecl):(amb|blu|brn|gry|grn|hzl|oth)/
-const passportIdRgx = /(pid):(\d{9})/
+const passportIdRgx = /(pid):(\d{9})\b/
 
 processedPassportsCounter = 0
 passportsWithRequiredFields = []
