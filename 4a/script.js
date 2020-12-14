@@ -1,3 +1,6 @@
+// Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 233
+// rezultat 2. dela je pa = 111
+
 /* Kako sem se lotil naloge?
 Moj prva misel je bila uporaba Regexov, a ker je naloga relativno preprosta,
 saj je treba le ugotoviti, če so določena polja prisotna, sem se odločil za

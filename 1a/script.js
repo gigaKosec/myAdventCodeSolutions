@@ -1,3 +1,6 @@
+// Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 444019
+// rezultat 2. dela je pa = 29212176 
+
 inputData = [
 1509,
 1857,

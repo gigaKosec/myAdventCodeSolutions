@@ -1,4 +1,5 @@
-//Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 832
+// Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 832
+// rezultat 2. dela je pa = 517
 
 let mockString = "BFFFBBFRRR"   // row 70, column 7
 let mockStringOnlyRow = "BFFFBBFRRR" // row 70

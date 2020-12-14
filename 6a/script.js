@@ -1,3 +1,6 @@
+// Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 6625
+// rezultat 2. dela je pa = 3360
+
 let input =
 `iwaduermzfyc
 zdmrlfyau

@@ -1,4 +1,5 @@
-//Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 233
+// Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 233
+// rezultat 2. dela je pa = 111
 
 // vhodni podatki:
 inputList = [

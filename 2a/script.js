@@ -1,3 +1,6 @@
+// Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 622
+// rezultat 2. dela je pa = 263
+
 // mock input data (iz primera):
 /* inputData = [
 "1-3 a: abcdeaaaaa",

@@ -1,3 +1,6 @@
+// Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 164
+// rezultat 2. dela je pa = 5007658656
+
 //mock input list (iz primera na e-strani)
 /* inputList = [
 "..##.......",
