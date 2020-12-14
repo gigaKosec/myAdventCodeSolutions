@@ -1,3 +1,5 @@
+//Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 6625
+
 let input =
 `iwaduermzfyc
 zdmrlfyau

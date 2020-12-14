@@ -1,3 +1,4 @@
+//Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 233
 
 // vhodni podatki:
 inputList = [

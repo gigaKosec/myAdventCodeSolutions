@@ -1,3 +1,5 @@
+//Za dostop do navodil za 2. del lahko vpišeš rezultat za prvi del = 832
+
 let mockString = "BFFFBBFRRR"   // row 70, column 7
 let mockStringOnlyRow = "BFFFBBFRRR" // row 70
 let mockStringOnlyRow2 = "FFFBBBFRLR" // row 14
